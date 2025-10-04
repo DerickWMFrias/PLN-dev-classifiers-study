@@ -1,0 +1,10 @@
+services:
+  pythonapp:
+    build: 
+      context: /python
+      dockerfile: Dockerfile
+    image: pythonappimg
+    volumes:
+      - ./python:/app 
+    ports:
+      - "8888:8888"

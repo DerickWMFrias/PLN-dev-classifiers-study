@@ -1,0 +1,9 @@
+.gitignore
+
+docker-compose.yml
+docker-compose.yaml
+
+*.ipynb_checkpoints
+*__pycache__
+
+*.zip
