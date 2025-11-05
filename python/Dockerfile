@@ -26,8 +26,17 @@ RUN apt-get update && apt-get upgrade -y && \
 RUN python3.12 -m pip install --no-cache-dir --break-system-packages\
     pandas \
     scikit-learn \
-    jupyter
+    jupyter \
+    transformers \
+    torch \
+    git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview \
+    sentence-transformers>=5.0.0 \
+    einops \
+    FlagEmbedding
 
+    # Pacotes leves e mutáveis
+RUN python3.12 -m pip install --no-cache-dir --break-system-packages \
+    xgboost
 
 # Define o diretório de trabalho & faz cópia
 WORKDIR /app
