@@ -1,3 +1,5 @@
+Dockerfile
+
 .gitignore
 *.Trash*
 
@@ -8,3 +10,4 @@ docker-compose.yaml
 *__pycache__
 
 *.zip
+
