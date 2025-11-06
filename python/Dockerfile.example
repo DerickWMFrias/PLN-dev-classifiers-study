@@ -1,0 +1,65 @@
+# Usa a imagem base Ubuntu 24.04
+FROM ubuntu:24.04
+
+# Evita prompts interativos durante instalações
+#
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Atualiza pacotes e instala utilitários básicos
+#
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y \
+    curl \
+    wget \
+    git \
+    vim \
+    bash \
+    ca-certificates \
+    python3.12 \
+    python3-pip \
+    python3-dev \
+    build-essential \
+    gfortran \
+    libatlas-base-dev \
+    liblapack-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+
+
+
+# Instala pacotes Python principais
+#
+RUN python3.12 -m pip install --no-cache-dir --break-system-packages\
+    pandas \
+    scikit-learn \
+    jupyter \
+    xgboost
+#   Caso deseje rodar scripts para gerar Embeddings, descomente os seguintes pacotes p/ instalá-los na imagem
+#   Note que esses pacotes são bastante grandes, e que é possível que você precise de GPU para rodar os modelos de embedding
+# 
+#    \
+#    transformers \
+#    torch \
+#    git+https://github.com/huggingface/transformers@v4.56.0-Embedding-Gemma-preview \
+#    sentence-transformers>=5.0.0 \
+#    einops \
+#    FlagEmbedding
+
+
+
+# Instala pacotes leves e mutáveis
+#
+#   Se desejar instalar pacotes custom, adicione-os abaixo (principalmente se estiver com os pacotes que geram embeddings instalados na imagem)
+#   Motivo: O Docker armazena um hash de cada RUN que ele roda na Dockerfile, e esse RUN é re-executado toda vez que é editado. 
+#   Se você editar o RUN de cima, que contém pacotes mais pesados, tudo é re-instalado, o que vai gastar bastante tempo/disco.
+#
+#RUN python3.12 -m pip install --no-cache-dir --break-system-packages \
+#    <your-packets>
+
+
+# Define o diretório de trabalho & faz cópia
+WORKDIR /app
+COPY . /app
+
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
